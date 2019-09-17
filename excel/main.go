@@ -2,23 +2,23 @@ package main
 
 import (
 	"fmt"
-	log "github.com/sirupsen/logrus"
-	"github.com/tealeg/xlsx"
 	"os"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/tealeg/xlsx"
 )
 
-
-
-func main()  {
+func main() {
 
 	var (
 		ProductList []string
 
-		file *xlsx.File
+		file   *xlsx.File
 		sheet1 *xlsx.Sheet
-		row1 *xlsx.Row
-		cell1 *xlsx.Cell
+		row1   *xlsx.Row
+		cell1  *xlsx.Cell
+		cell2  *xlsx.Cell
 	)
 
 	excelFileName := "/Users/subway/Desktop/test.xlsx"
@@ -35,7 +35,6 @@ func main()  {
 		fmt.Printf(err.Error())
 	}
 
-
 	for _, sheet := range xlFile.Sheets {
 		for _, row := range sheet.Rows {
 			for _, cell := range row.Cells {
@@ -45,10 +44,16 @@ func main()  {
 					ProductList = strings.Split(text, "||")
 					for _, value := range ProductList {
 						fmt.Printf("%s//", value)
-						// write(value)
-						row1 = sheet1.AddRow()
-						cell1 = row1.AddCell()
-						cell1.Value = value
+						arr := strings.Split(value, " ")
+						if arr != nil {
+							row1 = sheet1.AddRow()
+							cell1 = row1.AddCell()
+							cell1.Value = arr[0]
+							cell2 = row1.AddCell()
+							if le := len(arr); le > 3 {
+								cell2.Value = arr[le-3]
+							}
+						}
 					}
 				}
 			}
@@ -61,7 +66,6 @@ func main()  {
 	}
 
 }
-
 
 //func write(value string) {
 //
