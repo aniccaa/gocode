@@ -26,9 +26,9 @@ func main() {
 	if err != nil {
 		log.WithFields(log.Fields{"xlFile": xlFile, "error": err}).Info("open excel file failed.")
 		// create file
-		f, err := os.create("C:/test/log.txt")
+		f, err := os.Create("C:/test/log.txt")
 		check(err)
-		defer f.close()
+		defer f.Close()
 		// write file
 		n3, err := f.WriteString("open excel file failed\n")
 		fmt.Printf("wrote %d bytes\n", n3)
