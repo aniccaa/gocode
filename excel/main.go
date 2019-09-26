@@ -21,10 +21,19 @@ func main() {
 		cell2  *xlsx.Cell
 	)
 
-	excelFileName := "/Users/subway/Desktop/test.xlsx"
+	excelFileName := "C:/test/test.xlsx"
 	xlFile, err := xlsx.OpenFile(excelFileName)
 	if err != nil {
-		log.WithFields(log.Fields{"xlFile": xlFile, "error": err}).Info("open xls failed.")
+		log.WithFields(log.Fields{"xlFile": xlFile, "error": err}).Info("open excel file failed.")
+		// create file
+		f, err := os.create("C:/test/log.txt")
+		check(err)
+		defer f.close()
+		// write file
+		n3, err := f.WriteString("open excel file failed\n")
+		fmt.Printf("wrote %d bytes\n", n3)
+		f.Sync()
+		// exit
 		os.Exit(1)
 	}
 
@@ -60,7 +69,7 @@ func main() {
 		}
 	}
 
-	err = file.Save("/Users/subway/Desktop/result.xlsx")
+	err = file.Save("C:/test/result.xlsx")
 	if err != nil {
 		fmt.Printf(err.Error())
 	}
