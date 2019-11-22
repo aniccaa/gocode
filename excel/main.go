@@ -11,6 +11,7 @@ import (
 
 func main() {
 
+	const path = "/workspace/tmp/result.xlsx"
 	var (
 		ProductList []string
 
@@ -21,10 +22,21 @@ func main() {
 		cell2  *xlsx.Cell
 	)
 
-	excelFileName := "/Users/subway/Desktop/test.xlsx"
+	excelFileName := "/Users/subway/Desktop/test_bak.xlsx"
 	xlFile, err := xlsx.OpenFile(excelFileName)
 	if err != nil {
-		log.WithFields(log.Fields{"xlFile": xlFile, "error": err}).Info("open xls failed.")
+		log.WithFields(log.Fields{"xlFile": xlFile, "error": err}).Info("open excel file failed.")
+		// create file
+		f, err := os.Create("C:/test/log.txt")
+		if err != nil {
+			log.Error("log error.")
+		}
+		defer f.Close()
+		// write file
+		n3, err := f.WriteString("open excel file failed\n")
+		fmt.Printf("wrote %d bytes\n", n3)
+		f.Sync()
+		// exit
 		os.Exit(1)
 	}
 
@@ -52,6 +64,14 @@ func main() {
 							cell2 = row1.AddCell()
 							if le := len(arr); le > 3 {
 								cell2.Value = arr[le-3]
+								for m, vv := range arr {
+									fmt.Println(arr)
+									fmt.Println(le)
+									fmt.Println(arr[le-3])
+									fmt.Println(m)
+									fmt.Println(vv)
+									fmt.Println("------------")
+								}
 							}
 						}
 					}
@@ -60,7 +80,7 @@ func main() {
 		}
 	}
 
-	err = file.Save("/Users/subway/Desktop/result.xlsx")
+	err = file.Save(path)
 	if err != nil {
 		fmt.Printf(err.Error())
 	}
